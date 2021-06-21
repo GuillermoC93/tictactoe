@@ -1,0 +1,12 @@
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: lightblue;
+  height: 250px;
+}
+
+.title {
+  font-size: 100px;
+  line-height: 250px;
+  font-family: 'Montserrat', sans-serif;
+}
