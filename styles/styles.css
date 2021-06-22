@@ -1,3 +1,21 @@
+.container {
+  background-color: black;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 4px;
+  width: 500px;
+  height: 500px;
+  align-items: center;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.container div {
+  background-color: white;
+  height: 164px;
+}
+
 .header {
   display: flex;
   justify-content: center;
