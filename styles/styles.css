@@ -40,3 +40,10 @@ body {
   line-height: 250px;
   font-family: 'Montserrat', sans-serif;
 }
+
+.symbol {
+  font-family: 'Roboto', sans-serif;
+  font-size: 100px;
+  text-align: center;
+  line-height: 164px;
+}
