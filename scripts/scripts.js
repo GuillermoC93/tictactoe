@@ -1,12 +1,11 @@
 const playerFactory = (name, symbol) => {
-  const sayHello = () => console.log("Hello!")
-  return { name, symbol, sayHello };
+  return { name, symbol };
 };
 
 const gameBoard = (() => {
   "use strict";
 
-  const board = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
+  const board = ["", "", "", "", "", "", "", "", ""];
 
   return { board }
 })();
@@ -17,10 +16,11 @@ const displayController = (() => {
   const grid = document.querySelector(".container");
   const cells = document.querySelectorAll('[data-index]');
 
-  cells.forEach((cell, index) => {
+  // populates display with gameBoard contents
+  const populateDisplay = function() {
+    cells.forEach((cell, index) => {
     cell.textContent = gameBoard.board[index];
-    cell.classList.toggle('symbol');
-  });
+  })};
 
   const handler = (event) => {
     if (event.target != grid) {
@@ -31,4 +31,21 @@ const displayController = (() => {
   // event handlers for mouseover effect
   grid.addEventListener("mouseover", handler);
   grid.addEventListener("mouseout", handler);
+
+  // function for displaying each player move to the onscreen board
+  const displayMove = (player) => {
+    grid.addEventListener("click", event => {
+      if (event.target != grid) {
+        if (gameBoard.board[event.target.dataset.index] == "") {
+          gameBoard.board[event.target.dataset.index] = player.symbol
+          event.target.classList.toggle('symbol')
+          populateDisplay()
+        } else {
+          return
+        }
+      }
+    })
+  }
+
+  return { displayMove }
 })();
