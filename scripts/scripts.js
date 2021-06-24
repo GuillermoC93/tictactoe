@@ -17,7 +17,7 @@ const displayController = (() => {
   const cells = document.querySelectorAll('[data-index]');
 
   // populates display with gameBoard contents
-  const populateDisplay = function() {
+  const _populateDisplay = function() {
     cells.forEach((cell, index) => {
     cell.textContent = gameBoard.board[index];
   })};
@@ -30,18 +30,33 @@ const displayController = (() => {
   };
 
   // handler for click event
-  const clickHandler = (player) => {
-    return function(event) {
-      if (event.target != grid) {
-        if (gameBoard.board[event.target.dataset.index] == "") {
-          gameBoard.board[event.target.dataset.index] = player.symbol
-          event.target.classList.toggle('symbol');
-          populateDisplay();
-        } else {
-          return
-        }
+  const clickHandlerX = function(event) {
+    if (event.target != grid) {
+      if (gameBoard.board[event.target.dataset.index] == "") {
+        gameBoard.board[event.target.dataset.index] = gameController.player1.symbol
+        event.target.classList.toggle('symbol');
+        _populateDisplay();
+      } else {
+        return
       }
     }
+    // remove current clickHandler and add the opposite symbols handler
+    grid.removeEventListener("click", clickHandlerX);
+    grid.addEventListener("click", clickHandlerO)
+  }
+
+  const clickHandlerO = function(event) {
+    if (event.target != grid) {
+      if (gameBoard.board[event.target.dataset.index] == "") {
+        gameBoard.board[event.target.dataset.index] = gameController.player2.symbol
+        event.target.classList.toggle('symbol');
+        _populateDisplay();
+      } else {
+        return
+      }
+    }
+    grid.removeEventListener("click", clickHandlerO);
+    grid.addEventListener("click", clickHandlerX)
   }
 
   // event handlers for mouseover effect
@@ -49,9 +64,8 @@ const displayController = (() => {
   grid.addEventListener("mouseout", hoverHandler);
 
   // function for displaying each player move to the onscreen board
-  // uses a "once" option to only fire the event listener once
-  const displayMove = (player) => {
-    grid.addEventListener("click", clickHandler(player), { once: true });
+  const displayMove = () => {
+    grid.addEventListener("click", clickHandlerX);
   }
 
   return { displayMove }
@@ -63,22 +77,12 @@ const gameController = (() => {
 
   let player1 = playerFactory("john", "X");
   let player2 = playerFactory("amy", "O");
-  let currentPlayer = player1
-
-  const switchPlayer = () => {
-    if (currentPlayer == player1) {
-      currentPlayer = player2 
-    } else {
-      return
-    }
-  }
 
   const gameStart = function () {
-    displayController.displayMove(currentPlayer);
-    switchPlayer();
+    displayController.displayMove();
   }
 
-  return { gameStart }
+  return { gameStart, player1, player2}
 
 })();
 
