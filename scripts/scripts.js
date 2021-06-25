@@ -75,7 +75,7 @@ const displayController = (() => {
         gameBoard.board[event.target.dataset.index] = gameController.player1.symbol
         event.target.classList.toggle('symbol');
         _populateDisplay();
-        if (gameController.checkWin() == true) { console.log("Player 1 wins") }
+        if (gameController.checkWin()) { console.log("Player 1 wins") }
       } else {
         return
       }
@@ -91,7 +91,7 @@ const displayController = (() => {
         gameBoard.board[event.target.dataset.index] = gameController.player2.symbol
         event.target.classList.toggle('symbol');
         _populateDisplay();
-        if (gameController.checkWin() == true) { console.log("Player 2 wins") } 
+        if (gameController.checkWin()) { console.log("Player 2 wins") } 
       } else {
         return
       }
@@ -115,20 +115,20 @@ const gameController = (() => {
   let player1 = playerFactory("john", "X");
   let player2 = playerFactory("amy", "O");
 
-  const gameStart = function () {
-    displayController.displayMove();
-  }
-
   const checkWin = () => {
-    if (gameBoard.rowWin() == true) {
+    if (gameBoard.rowWin()) {
       return true
-    } else if (gameBoard.columnWin() == true) {
+    } else if (gameBoard.columnWin()) {
       return true
-    } else if (gameBoard.diagonalWin() == true) {
+    } else if (gameBoard.diagonalWin()) {
       return true
     } else {
       return false
     }
+  }
+
+  const gameStart = function () {
+    displayController.displayMove();
   }
 
   return { gameStart, player1, player2, checkWin }
