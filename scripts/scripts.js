@@ -19,18 +19,23 @@ const displayController = (() => {
   // populates display with gameBoard contents
   const _populateDisplay = function() {
     cells.forEach((cell, index) => {
-    cell.textContent = gameBoard.board[index];
-  })};
+      cell.textContent = gameBoard.board[index];
+    })
+  };
 
   // handler for hover over mouse event
-  const hoverHandler = (event) => {
+  const _hoverHandler = (event) => {
     if (event.target != grid) {
       event.target.classList.toggle('hover')
     }
   };
 
+  // event handlers for mouseover effect
+  grid.addEventListener("mouseover", _hoverHandler);
+  grid.addEventListener("mouseout", _hoverHandler);
+
   // handler for click event
-  const clickHandlerX = function(event) {
+  const _clickHandlerX = function(event) {
     if (event.target != grid) {
       if (gameBoard.board[event.target.dataset.index] == "") {
         gameBoard.board[event.target.dataset.index] = gameController.player1.symbol
@@ -41,11 +46,11 @@ const displayController = (() => {
       }
     }
     // remove current clickHandler and add the opposite symbols handler
-    grid.removeEventListener("click", clickHandlerX);
-    grid.addEventListener("click", clickHandlerO)
+    grid.removeEventListener("click", _clickHandlerX);
+    grid.addEventListener("click", _clickHandlerO)
   }
 
-  const clickHandlerO = function(event) {
+  const _clickHandlerO = function(event) {
     if (event.target != grid) {
       if (gameBoard.board[event.target.dataset.index] == "") {
         gameBoard.board[event.target.dataset.index] = gameController.player2.symbol
@@ -55,17 +60,13 @@ const displayController = (() => {
         return
       }
     }
-    grid.removeEventListener("click", clickHandlerO);
-    grid.addEventListener("click", clickHandlerX)
+    grid.removeEventListener("click", _clickHandlerO);
+    grid.addEventListener("click", _clickHandlerX)
   }
-
-  // event handlers for mouseover effect
-  grid.addEventListener("mouseover", hoverHandler);
-  grid.addEventListener("mouseout", hoverHandler);
 
   // function for displaying each player move to the onscreen board
   const displayMove = () => {
-    grid.addEventListener("click", clickHandlerX);
+    grid.addEventListener("click", _clickHandlerX);
   }
 
   return { displayMove }
@@ -82,7 +83,7 @@ const gameController = (() => {
     displayController.displayMove();
   }
 
-  return { gameStart, player1, player2}
+  return { gameStart, player1, player2 }
 
 })();
 
