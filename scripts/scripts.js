@@ -5,7 +5,11 @@ const playerFactory = (name, symbol) => {
 const gameBoard = (() => {
   "use strict";
 
-  const board = ["", "", "", "", "", "", "", "", ""];
+  let board = []
+
+  const createBoard = () => {
+    board.push("", "", "", "", "", "", "", "", "")
+  }
 
   const rowWin = () => {
     if (board[0] == board[1] && board[1] == board[2] && board[2] != "") {
@@ -41,7 +45,7 @@ const gameBoard = (() => {
     }
   }
 
-  return { board, rowWin, columnWin, diagonalWin }
+  return { board, rowWin, columnWin, diagonalWin, createBoard }
 })();
 
 const displayController = (() => {
@@ -49,6 +53,42 @@ const displayController = (() => {
 
   const grid = document.querySelector(".container");
   const cells = document.querySelectorAll('[data-index]');
+  const displayText = document.querySelector(".gameDisplay");
+  const btn = document.querySelector(".btn");
+
+  btn.addEventListener("mouseover", () => {
+    btn.classList.toggle("btn-hover");
+  });
+
+  btn.addEventListener("mouseout", () => {
+    btn.classList.toggle("btn-hover");
+  });
+
+  const _removeCellClass = () => {
+    cells.forEach(cell => {
+      if (cell.classList = "symbol") {
+        cell.classList.toggle("symbol");
+      }
+    })
+  }
+
+  const _winDisplayX = (bool) => {
+    if (bool == true) {
+      displayText.textContent = "Player X wins";
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const _winDisplayO = (bool) => {
+    if (bool == true) {
+      displayText.textContent = "Player O wins";
+      return true
+    } else {
+      return false
+    }
+  }
 
   // populates display with gameBoard contents
   const _populateDisplay = function() {
@@ -75,7 +115,12 @@ const displayController = (() => {
         gameBoard.board[event.target.dataset.index] = gameController.player1.symbol
         event.target.classList.toggle('symbol');
         _populateDisplay();
-        if (gameController.checkWin()) { console.log("Player 1 wins") }
+        displayText.textContent = "Player O's move"
+        console.log(_winDisplayX(gameController.checkWin()))
+        if (_winDisplayX(gameController.checkWin())) {
+          grid.removeEventListener("click", _clickHandlerX);
+          return
+        };
       } else {
         return
       }
@@ -91,7 +136,11 @@ const displayController = (() => {
         gameBoard.board[event.target.dataset.index] = gameController.player2.symbol
         event.target.classList.toggle('symbol');
         _populateDisplay();
-        if (gameController.checkWin()) { console.log("Player 2 wins") } 
+        displayText.textContent = "Player X's move"
+        if (_winDisplayO(gameController.checkWin())) {
+          grid.removeEventListener("click", _clickHandlerO);
+          return
+        };
       } else {
         return
       }
@@ -103,6 +152,7 @@ const displayController = (() => {
   // function for displaying each player move to the onscreen board
   const displayMove = () => {
     grid.addEventListener("click", _clickHandlerX);
+    displayText.textContent = "Player X's move"
   }
 
   return { displayMove }
@@ -128,6 +178,7 @@ const gameController = (() => {
   }
 
   const gameStart = function () {
+    gameBoard.createBoard()
     displayController.displayMove();
   }
 

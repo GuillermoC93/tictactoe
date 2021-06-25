@@ -16,6 +16,10 @@ body {
   text-align: center;
 }
 
+.btn-hover {
+  background-color: #6CA5DD;
+}
+
 .container {
   background-color: black;
   display: grid;
