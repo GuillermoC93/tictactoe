@@ -64,13 +64,9 @@ const displayController = (() => {
     btn.classList.toggle("btn-hover");
   });
 
-  const _removeCellClass = () => {
-    cells.forEach(cell => {
-      if (cell.classList = "symbol") {
-        cell.classList.toggle("symbol");
-      }
-    })
-  }
+  btn.addEventListener("click", () => {
+    window.location.reload()
+  })
 
   const _winDisplayX = (bool) => {
     if (bool == true) {
@@ -116,11 +112,13 @@ const displayController = (() => {
         event.target.classList.toggle('symbol');
         _populateDisplay();
         displayText.textContent = "Player O's move"
-        console.log(_winDisplayX(gameController.checkWin()))
         if (_winDisplayX(gameController.checkWin())) {
           grid.removeEventListener("click", _clickHandlerX);
           return
         };
+        if (!gameController.drawGame()) {
+          displayText.textContent = "It's a draw"
+        }
       } else {
         return
       }
@@ -141,6 +139,9 @@ const displayController = (() => {
           grid.removeEventListener("click", _clickHandlerO);
           return
         };
+        if (!gameController.drawGame()) {
+          displayText.textContent = "It's a draw"
+        }
       } else {
         return
       }
@@ -182,7 +183,11 @@ const gameController = (() => {
     displayController.displayMove();
   }
 
-  return { gameStart, player1, player2, checkWin }
+  const drawGame = () => {
+    return gameBoard.board.includes("")
+  }
+
+  return { gameStart, player1, player2, checkWin, drawGame }
 
 })();
 
