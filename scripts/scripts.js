@@ -86,6 +86,12 @@ const displayController = (() => {
     }
   }
 
+  const _drawDisplay = () => {
+    if (!gameController.drawGame()) {
+      displayText.textContent = "It's a draw"
+    }
+  }
+
   // populates display with gameBoard contents
   const _populateDisplay = function() {
     cells.forEach((cell, index) => {
@@ -116,9 +122,7 @@ const displayController = (() => {
           grid.removeEventListener("click", _clickHandlerX);
           return
         };
-        if (!gameController.drawGame()) {
-          displayText.textContent = "It's a draw"
-        }
+        _drawDisplay();
       } else {
         return
       }
@@ -139,9 +143,7 @@ const displayController = (() => {
           grid.removeEventListener("click", _clickHandlerO);
           return
         };
-        if (!gameController.drawGame()) {
-          displayText.textContent = "It's a draw"
-        }
+        _drawDisplay();
       } else {
         return
       }
