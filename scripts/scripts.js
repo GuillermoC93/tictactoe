@@ -1,5 +1,5 @@
-const playerFactory = (name, symbol) => {
-  return { name, symbol };
+const playerFactory = (symbol) => {
+  return { symbol };
 };
 
 const gameBoard = (() => {
@@ -165,8 +165,8 @@ const displayController = (() => {
 const gameController = (() => {
   "use strict";
 
-  let player1 = playerFactory("john", "X");
-  let player2 = playerFactory("amy", "O");
+  let player1 = playerFactory("X");
+  let player2 = playerFactory("O");
 
   const checkWin = () => {
     if (gameBoard.rowWin()) {
