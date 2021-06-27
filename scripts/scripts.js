@@ -48,6 +48,7 @@ const gameBoard = (() => {
   };
 
   return { board, rowWin, columnWin, diagonalWin, reset }
+
 })();
 
 const displayController = (() => {
@@ -171,6 +172,9 @@ const displayController = (() => {
     displayText.textContent = "Player X's move"
   }
 
+  grid.addEventListener("click", _clickHandlerX);
+  displayText.textContent = "Player X's move"
+
   return { displayMove }
 
 })();
@@ -204,5 +208,3 @@ const gameController = (() => {
   return { gameStart, player1, player2, checkWin, drawGame }
 
 })();
-
-gameController.gameStart();
