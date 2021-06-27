@@ -5,11 +5,7 @@ const playerFactory = (symbol) => {
 const gameBoard = (() => {
   "use strict";
 
-  let board = []
-
-  const createBoard = () => {
-    board.push("", "", "", "", "", "", "", "", "")
-  }
+  let board = ["", "", "", "", "", "", "", "", ""];
 
   const rowWin = () => {
     if (board[0] == board[1] && board[1] == board[2] && board[2] != "") {
@@ -45,7 +41,13 @@ const gameBoard = (() => {
     }
   }
 
-  return { board, rowWin, columnWin, diagonalWin, createBoard }
+  const reset = () => {
+    for (let i = 0; i < board.length; i++) {
+      board[i] = "";
+    }
+  };
+
+  return { board, rowWin, columnWin, diagonalWin, reset }
 })();
 
 const displayController = (() => {
@@ -65,8 +67,19 @@ const displayController = (() => {
   });
 
   btn.addEventListener("click", () => {
-    window.location.reload()
+    grid.removeEventListener('click', _clickHandlerO);
+    grid.removeEventListener('click', _clickHandlerX);
+    gameBoard.reset();
+    clearClasses();
+    _populateDisplay();
+    gameController.gameStart();
   })
+
+  const clearClasses = () => {
+    cells.forEach(cell => {
+      cell.classList.remove('symbol');
+    })
+  }
 
   const _winDisplayX = (bool) => {
     if (bool == true) {
@@ -181,7 +194,6 @@ const gameController = (() => {
   }
 
   const gameStart = function () {
-    gameBoard.createBoard()
     displayController.displayMove();
   }
 
